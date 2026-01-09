@@ -181,7 +181,7 @@ const projects = ref([
     title: "Chatbot de IA",
     description:
       "Chatbot inteligente impulsado por IA que responde preguntas y asiste a los usuarios en tiempo real mediante procesamiento de lenguaje natural.",
-    image: "/public/chatBot.png",
+    image: "/chatBot.png",
     demo: "https://react-ai-chatbot-gamma.vercel.app/",
     github: "https://github.com/Heectorr90/react-ai-chatbot",
     technologies: ["React", "OpenAI", "GPT", "Gemini"],
@@ -205,7 +205,7 @@ const projects = ref([
     title: "EventHub",
     description:
       "Sistema de gestión de eventos que permite crear, registrar y administrar participantes. Incluye autenticación, control de aforo y panel de administración.",
-    image: "/public/event_hub.png",
+    image: "/event_hub.png",
     demo: "https://hectorrm.infinityfreeapp.com/",
     github: "https://github.com/Heectorr90/EventHub.git",
     technologies: ["PHP", "MySQL", "Bootstrap", "JavaScript"],
@@ -216,7 +216,7 @@ const projects = ref([
     title: "Blog Personal",
     description:
       "Blog moderno con búsqueda y categorías. Con autenticación y panel de administración con roles de usuario.",
-    image: "/public/blog_app.png",
+    image: "/blog_app.png",
     demo: "https://blog-app-six-drab.vercel.app/",
     github: "https://github.com/Heectorr90/blog-app.git",
     technologies: ["Vue.js", "Vuetify", "Laravel", "MySQL", "JWT"],
@@ -227,7 +227,7 @@ const projects = ref([
     title: "Task Manager",
     description:
       "Permite a los usuarios registrarse, iniciar sesión y administrar sus pendientes mediante una interfaz clara e intuitiva. El sistema incluye autenticación con JWT, filtrado por estado y operaciones CRUD completas.",
-    image: "/public/to_do_app.png",
+    image: "/to_do_app.png",
     demo: "https://to-do-app-hector-rm.vercel.app/",
     github: "https://github.com/Heectorr90/to-do-app.git",
     technologies: ["Vue.js", "Vuetify", "Laravel", "MySQL", "JWT"],
