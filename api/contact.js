@@ -1,4 +1,8 @@
 /* eslint-disable no-undef */
+export const config = {
+  runtime: "nodejs",
+};
+
 import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
