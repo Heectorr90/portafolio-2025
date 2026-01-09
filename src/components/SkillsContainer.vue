@@ -95,6 +95,8 @@ const skillCategories = ref([
       { name: "JavaScript", level: 88 },
       { name: "Vue.js", level: 85 },
       { name: "Angular", level: 80 },
+      { name: "React", level: 70 },
+      { name: "Django", level: 70 },
     ],
   },
   {
@@ -106,6 +108,7 @@ const skillCategories = ref([
       { name: "MySQL", level: 85 },
       { name: "REST APIs", level: 80 },
       { name: "Node.js", level: 70 },
+      { name: "Python ", level: 70 },
     ],
   },
   {

@@ -161,6 +161,7 @@
 
 <script setup>
 import { ref } from "vue";
+import api from "@/services/api";
 
 const form = ref(null);
 const valid = ref(false);
@@ -200,10 +201,13 @@ const contactItems = ref([
 ]);
 
 const socialLinks = ref([
-  { name: "GitHub", icon: "mdi-github", url: "https://github.com/tuusuario" },
-  { name: "LinkedIn", icon: "mdi-linkedin", url: "https://linkedin.com/in/tuusuario" },
-  { name: "Twitter", icon: "mdi-twitter", url: "https://twitter.com/tuusuario" },
-  { name: "Instagram", icon: "mdi-instagram", url: "https://instagram.com/tuusuario" },
+  { name: "GitHub", icon: "mdi-github", url: "https://github.com/Heectorr90" },
+  {
+    name: "LinkedIn",
+    icon: "mdi-linkedin",
+    url: "https://www.linkedin.com/in/hector-ramirez-909577215/",
+  },
+  { name: "Instagram", icon: "mdi-instagram", url: "https://www.instagram.com/yovaz.ramirez/" },
 ]);
 
 // Reglas de validación
@@ -237,9 +241,7 @@ const submitForm = async () => {
     showError.value = false;
 
     try {
-      // Aquí puedes integrar con un servicio de email como EmailJS, Formspree, etc.
-      // Por ahora simulamos el envío
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await api.post("/contact", formData.value);
 
       console.log("Formulario enviado:", formData.value);
 

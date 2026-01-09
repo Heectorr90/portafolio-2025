@@ -160,6 +160,7 @@ const selectedFilter = ref("Todos");
 const filters = ref(["Todos", "Full Stack", "API Rest", "Otros"]);
 
 const projects = ref([
+  /*
   {
     id: 1,
     title: "E-commerce",
@@ -174,17 +175,19 @@ const projects = ref([
     technologies: ["Vue.js", "Node.js", "MongoDB", "Laravel"],
     category: ["Full Stack", "API Rest"],
   },
+  */
   {
     id: 2,
     title: "Chatbot de IA",
     description:
-      "Chatbot inteligente para atención al cliente con procesamiento de lenguaje natural.",
-    image: "https://via.placeholder.com/400x250/112e42/00abf0?text=Chatbot",
-    demo: "#",
-    github: "#",
-    technologies: ["Vue.js", "Chart.js", "Vuetify"],
+      "Chatbot inteligente impulsado por IA que responde preguntas y asiste a los usuarios en tiempo real mediante procesamiento de lenguaje natural.",
+    image: "/public/chatBot.png",
+    demo: "https://react-ai-chatbot-gamma.vercel.app/",
+    github: "https://github.com/Heectorr90/react-ai-chatbot",
+    technologies: ["React", "OpenAI", "GPT", "Gemini"],
     category: ["Otros"],
   },
+  /*
   {
     id: 3,
     title: "BizTrack",
@@ -196,24 +199,26 @@ const projects = ref([
     technologies: ["Vue.js", "Vuetify", "Laravel", "MySQL", "JWT"],
     category: ["Full Stack"],
   },
+  */
   {
     id: 4,
     title: "EventHub",
     description:
       "Sistema de gestión de eventos que permite crear, registrar y administrar participantes. Incluye autenticación, control de aforo y panel de administración.",
-    image: "https://via.placeholder.com/400x250/112e42/00abf0?text=EventHub",
-    demo: "#",
-    github: "#",
+    image: "/public/event_hub.png",
+    demo: "https://hectorrm.infinityfreeapp.com/",
+    github: "https://github.com/Heectorr90/EventHub.git",
     technologies: ["PHP", "MySQL", "Bootstrap", "JavaScript"],
     category: ["Otros"],
   },
   {
     id: 5,
     title: "Blog Personal",
-    description: "Blog moderno con sistema de comentarios, búsqueda y categorías.",
-    image: "https://via.placeholder.com/400x250/112e42/00abf0?text=Tasks",
-    demo: "#",
-    github: "#",
+    description:
+      "Blog moderno con búsqueda y categorías. Con autenticación y panel de administración con roles de usuario.",
+    image: "/public/blog_app.png",
+    demo: "https://blog-app-six-drab.vercel.app/",
+    github: "https://github.com/Heectorr90/blog-app.git",
     technologies: ["Vue.js", "Vuetify", "Laravel", "MySQL", "JWT"],
     category: ["Full Stack", "API Rest"],
   },
@@ -222,8 +227,8 @@ const projects = ref([
     title: "Task Manager",
     description:
       "Permite a los usuarios registrarse, iniciar sesión y administrar sus pendientes mediante una interfaz clara e intuitiva. El sistema incluye autenticación con JWT, filtrado por estado y operaciones CRUD completas.",
-    image: "https://via.placeholder.com/400x250/112e42/00abf0?text=Portfolio",
-    demo: "#",
+    image: "/public/to_do_app.png",
+    demo: "https://to-do-app-hector-rm.vercel.app/",
     github: "https://github.com/Heectorr90/to-do-app.git",
     technologies: ["Vue.js", "Vuetify", "Laravel", "MySQL", "JWT"],
     category: ["Full Stack", "API Rest"],
