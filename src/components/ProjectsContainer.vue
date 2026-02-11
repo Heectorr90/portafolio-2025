@@ -160,22 +160,30 @@ const selectedFilter = ref("Todos");
 const filters = ref(["Todos", "Full Stack", "API Rest", "Otros"]);
 
 const projects = ref([
-  /*
   {
     id: 1,
     title: "E-commerce",
     description:
-      "Plataforma de comercio electrónico completa con carrito de compras, pagos y panel de administración.",
-    image: "https://via.placeholder.com/400x250/112e42/00abf0?text=E-commerce",
+      "Este proyecto consiste en el desarrollo de una tienda online full stack moderna y escalable, utilizando Laravel 10 como backend API REST y Angular 17 como frontend SPA, El sistema está diseñado para cubrir un flujo completo de ecommerce: gestión de usuarios, productos, carrito de compras, pagos en línea y despliegue en la nube. Asi como un panel de administración para gestionar productos, pedidos y usuarios.",
+    image: "/ecommerce.png",
     demo: [
       { name: "Usuario", url: "https://tudemo.com/ecommerce" },
       { name: "Admin", url: "https://tudemo.com/admin" },
     ],
-    github: "#",
-    technologies: ["Vue.js", "Node.js", "MongoDB", "Laravel"],
+    github: "https://github.com/Heectorr90/E-commerce-app",
+    technologies: [
+      "Angular",
+      "JWT",
+      "MySQL",
+      "Laravel",
+      "PayPal API",
+      "Mercado Pago API",
+      "Angular Material",
+      "TypeScript",
+      "RxJS",
+    ],
     category: ["Full Stack", "API Rest"],
   },
-  */
   {
     id: 2,
     title: "Chatbot de IA",
