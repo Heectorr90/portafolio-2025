@@ -120,6 +120,8 @@ const skillCategories = ref([
       { name: "Automatización", level: 85 },
       { name: "Scripts Backend", level: 80 },
       { name: "Testing", level: 70 },
+      { name: "Tailwind CSS", level: 70 },
+      { name: "Livewire", level: 70 },
     ],
   },
 ]);

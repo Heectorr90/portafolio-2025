@@ -195,19 +195,19 @@ const projects = ref([
     technologies: ["React", "OpenAI", "GPT", "Gemini"],
     category: ["Otros"],
   },
-  /*
+
   {
     id: 3,
-    title: "BizTrack",
+    title: "Sistema de Inventario de Equipos",
     description:
-      "BizTrack es un sistema ERP ligero con módulo CRM integrado, diseñado para pequeñas y medianas empresas. Permite gestionar clientes, ventas, inventario y facturación desde una única plataforma.",
-    image: "https://via.placeholder.com/400x250/112e42/00abf0?text=ERP",
-    demo: "#",
-    github: "#",
-    technologies: ["Vue.js", "Vuetify", "Laravel", "MySQL", "JWT"],
+      "Sistema web para gestionar equipos mediante una estructura jerárquica (Categoría Padre, Hijo y Subcategoría). Incluye CRUD completo, validaciones y generación automática de código de inventario único con prefijo y consecutivo. Cuenta con formularios dinámicos, búsqueda, filtros y paginación. Desarrollado con Livewire para una experiencia fluida y Tailwind para una interfaz moderna.",
+    image: "/inventory_system.png",
+    demo: "https://in-time-control-production.up.railway.app/",
+    github: "https://github.com/Heectorr90/in-time-control.git",
+    technologies: ["Laravel", "MySQL", "Livewire", "Tailwind CSS"],
     category: ["Full Stack"],
   },
-  */
+
   {
     id: 4,
     title: "EventHub",
@@ -232,14 +232,14 @@ const projects = ref([
   },
   {
     id: 6,
-    title: "Task Manager",
+    title: "DashForge",
     description:
-      "Permite a los usuarios registrarse, iniciar sesión y administrar sus pendientes mediante una interfaz clara e intuitiva. El sistema incluye autenticación con JWT, filtrado por estado y operaciones CRUD completas.",
-    image: "/to_do_app.png",
-    demo: "https://to-do-app-hector-rm.vercel.app/",
-    github: "https://github.com/Heectorr90/to-do-app.git",
-    technologies: ["Vue.js", "Vuetify", "Laravel", "MySQL", "JWT"],
-    category: ["Full Stack", "API Rest"],
+      "Aplicación web en Vue 3 para crear dashboards dinámicos con widgets personalizables y drag & drop. Usa Pinia para manejo de estado y renderizado dinámico de componentes. Soporta modo local y persistencia con usuarios autenticados, ofreciendo una experiencia flexible y escalable.",
+    image: "/dash_forge.png",
+    demo: "https://dash-forge-iota.vercel.app/",
+    github: "https://github.com/Heectorr90/DashForge.git",
+    technologies: ["Vue.js", "Tailwind CSS", "Laravel", "MySQL", "JWT"],
+    category: ["Full Stack"],
   },
 ]);
 
