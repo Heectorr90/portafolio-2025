@@ -11,7 +11,7 @@
       <!-- Logo / Nombre -->
       <div class="logo">
         <router-link to="/" class="text-decoration-none">
-          <span class="logo-text">Portafolio</span>
+          <span class="logo-text">{{ languageStore.t("navbar.brand") }}</span>
           <span class="logo-dot">.</span>
         </router-link>
       </div>
@@ -19,16 +19,42 @@
       <v-spacer></v-spacer>
 
       <!-- Menú Desktop -->
-      <div class="nav-links d-none d-md-flex">
+      <div class="nav-links d-none d-md-flex align-center">
         <a
           v-for="item in menuItems"
-          :key="item.title"
+          :key="item.link"
           :href="item.link"
           class="nav-link"
           @click.prevent="scrollToSection(item.link)"
         >
           {{ item.title }}
         </a>
+
+        <!-- Separador -->
+        <v-divider vertical class="mx-3"></v-divider>
+
+        <!-- Switch de idioma -->
+        <div class="language-switch">
+          <v-btn
+            :color="languageStore.currentLanguage === 'es' ? 'primary' : 'surface'"
+            variant="text"
+            size="small"
+            @click="languageStore.setLanguage('es')"
+            class="lang-btn"
+          >
+            ES
+          </v-btn>
+          <span class="lang-separator">|</span>
+          <v-btn
+            :color="languageStore.currentLanguage === 'en' ? 'primary' : 'surface'"
+            variant="text"
+            size="small"
+            @click="languageStore.setLanguage('en')"
+            class="lang-btn"
+          >
+            EN
+          </v-btn>
+        </div>
       </div>
 
       <!-- Botón menú móvil -->
@@ -49,7 +75,7 @@
     <v-list class="pt-8">
       <v-list-item
         v-for="item in menuItems"
-        :key="item.title"
+        :key="item.link"
         :href="item.link"
         @click="handleMobileClick(item.link)"
         class="mobile-menu-item"
@@ -61,6 +87,36 @@
           {{ item.title }}
         </v-list-item-title>
       </v-list-item>
+
+      <!-- Separador en móvil -->
+      <v-divider class="my-4"></v-divider>
+
+      <!-- Switch de idioma en móvil -->
+      <div class="pa-4 text-center">
+        <p class="mb-2" style="color: #ededed; font-weight: 500">
+          {{ languageStore.t("navbar.language") }}
+        </p>
+        <div class="d-flex justify-center gap-2">
+          <v-btn
+            :color="languageStore.currentLanguage === 'es' ? 'primary' : 'surface'"
+            variant="flat"
+            size="small"
+            @click="languageStore.setLanguage('es')"
+            class="flex-grow-1"
+          >
+            Español
+          </v-btn>
+          <v-btn
+            :color="languageStore.currentLanguage === 'en' ? 'primary' : 'surface'"
+            variant="flat"
+            size="small"
+            @click="languageStore.setLanguage('en')"
+            class="flex-grow-1"
+          >
+            English
+          </v-btn>
+        </div>
+      </div>
     </v-list>
 
     <!-- Información adicional en el drawer -->
@@ -68,14 +124,16 @@
       <div class="pa-4 text-center">
         <v-divider class="mb-4"></v-divider>
         <div class="social-links">
-          <v-btn icon variant="text" color="primary" href="https://github.com" target="_blank">
-            <v-icon>mdi-github</v-icon>
-          </v-btn>
-          <v-btn icon variant="text" color="primary" href="https://linkedin.com" target="_blank">
-            <v-icon>mdi-linkedin</v-icon>
-          </v-btn>
-          <v-btn icon variant="text" color="primary" href="mailto:tu@email.com">
-            <v-icon>mdi-email</v-icon>
+          <v-btn
+            v-for="social in socialLinks"
+            :key="social.name"
+            icon
+            variant="text"
+            color="primary"
+            :href="social.url"
+            target="_blank"
+          >
+            <v-icon>{{ social.icon }}</v-icon>
           </v-btn>
         </div>
       </div>
@@ -84,19 +142,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
+import { socialLinks } from "@/data/contact";
+import { useLanguageStore } from "@/stores/languageStore";
+
+const languageStore = useLanguageStore();
 
 // Estado del drawer
 const drawer = ref(false);
 const scrolled = ref(false);
 
-// Items del menú
-const menuItems = ref([
-  { title: "Inicio", link: "#home", icon: "mdi-home" },
-  { title: "Sobre mí", link: "#about", icon: "mdi-account" },
-  { title: "Habilidades", link: "#skills", icon: "mdi-code-tags" },
-  { title: "Proyectos", link: "#projects", icon: "mdi-folder-multiple" },
-  { title: "Contacto", link: "#contact", icon: "mdi-email" },
+// Items del menú - se actualizan cuando cambia el idioma
+const menuItems = computed(() => [
+  { title: languageStore.t("navbar.home"), link: "#home", icon: "mdi-home" },
+  { title: languageStore.t("navbar.about"), link: "#about", icon: "mdi-account" },
+  { title: languageStore.t("navbar.skills"), link: "#skills", icon: "mdi-code-tags" },
+  { title: languageStore.t("navbar.projects"), link: "#projects", icon: "mdi-folder-multiple" },
+  { title: languageStore.t("navbar.contact"), link: "#contact", icon: "mdi-email" },
 ]);
 
 // Función para scroll suave
@@ -213,6 +275,29 @@ onUnmounted(() => {
 
 .mobile-menu-item {
   margin: 8px 16px;
+
+  /* Language Switch */
+  .language-switch {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .lang-btn {
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    padding: 4px 8px;
+  }
+
+  .lang-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .lang-separator {
+    color: #ededed;
+    opacity: 0.5;
+  }
   border-radius: 8px;
   transition: all 0.3s ease;
 }

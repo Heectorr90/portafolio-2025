@@ -3,9 +3,12 @@
     <v-container>
       <!-- Título de la sección -->
       <div class="section-header text-center mb-12">
-        <h2 class="section-title">Mis <span class="highlight">Proyectos</span></h2>
+        <h2 class="section-title">
+          {{ languageStore.t("projects.myProjects") }}
+          <span class="highlight">{{ languageStore.t("projects.projectsHighlight") }}</span>
+        </h2>
         <div class="title-underline"></div>
-        <p class="section-subtitle mt-4">Algunos de mis trabajos más recientes</p>
+        <p class="section-subtitle mt-4">{{ languageStore.t("projects.projectsSubtitle") }}</p>
       </div>
 
       <!-- Filtros de proyectos -->
@@ -18,12 +21,12 @@
         >
           <v-chip
             v-for="filter in filters"
-            :key="filter"
-            :value="filter"
+            :key="filter.key"
+            :value="filter.key"
             size="large"
             class="filter-chip"
           >
-            {{ filter }}
+            {{ languageStore.t(filter.labelKey) }}
           </v-chip>
         </v-chip-group>
       </div>
@@ -40,7 +43,7 @@
                     icon
                     size="large"
                     color="primary"
-                    :href="project.demo"
+                    :href="project.demoLinks[0]?.url"
                     target="_blank"
                     class="overlay-btn"
                   >
@@ -62,8 +65,8 @@
 
             <!-- Contenido del proyecto -->
             <v-card-text class="pa-6">
-              <h3 class="project-title mb-3">{{ project.title }}</h3>
-              <p class="project-description mb-4">{{ project.description }}</p>
+              <h3 class="project-title mb-3">{{ languageStore.t(project.titleKey) }}</h3>
+              <p class="project-description mb-4">{{ languageStore.t(project.descriptionKey) }}</p>
 
               <!-- Tecnologías usadas -->
               <div class="technologies mb-4">
@@ -81,36 +84,19 @@
 
               <!-- Botones de acción -->
               <div class="project-actions">
-                <!-- Si solo hay mas de una demo -->
-                <template v-if="Array.isArray(project.demo)">
-                  <v-btn
-                    v-for="(link, index) in project.demo"
-                    :key="index"
-                    color="primary"
-                    variant="flat"
-                    :href="link.url"
-                    target="_blank"
-                    size="small"
-                    class="mr-2"
-                  >
-                    <v-icon start size="small">mdi-eye</v-icon>
-                    {{ link.name }}
-                  </v-btn>
-                </template>
-                <!-- Si solo hay una demo -->
-                <template v-else>
-                  <v-btn
-                    color="primary"
-                    variant="flat"
-                    :href="project.demo"
-                    target="_blank"
-                    size="small"
-                    class="mr-2"
-                  >
-                    <v-icon start size="small">mdi-eye</v-icon>
-                    Demo
-                  </v-btn>
-                </template>
+                <v-btn
+                  v-for="link in project.demoLinks"
+                  :key="link.url"
+                  color="primary"
+                  variant="flat"
+                  :href="link.url"
+                  target="_blank"
+                  size="small"
+                  class="mr-2"
+                >
+                  <v-icon start size="small">mdi-eye</v-icon>
+                  {{ link.labelKey ? languageStore.t(link.labelKey) : link.label }}
+                </v-btn>
                 <v-btn
                   color="primary"
                   variant="outlined"
@@ -119,7 +105,7 @@
                   size="small"
                 >
                   <v-icon start size="small">mdi-github</v-icon>
-                  Código
+                  {{ languageStore.t("projects.viewCode") }}
                 </v-btn>
               </div>
             </v-card-text>
@@ -131,7 +117,9 @@
       <v-row v-if="filteredProjects.length === 0">
         <v-col cols="12" class="text-center py-12">
           <v-icon size="80" color="primary">mdi-folder-open</v-icon>
-          <p class="text-h6 mt-4" style="color: #ededed">No hay proyectos en esta categoría</p>
+          <p class="text-h6 mt-4" style="color: #ededed">
+            {{ languageStore.t("projects.noProjects") }}
+          </p>
         </v-col>
       </v-row>
 
@@ -145,7 +133,7 @@
           target="_blank"
         >
           <v-icon start>mdi-github</v-icon>
-          Ver más en GitHub
+          {{ languageStore.t("projects.viewMoreGithub") }}
         </v-btn>
       </div>
     </v-container>
@@ -154,100 +142,20 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { projectFilters, projects } from "@/data/projects";
+import { useLanguageStore } from "@/stores/languageStore";
 
-const selectedFilter = ref("Todos");
+const languageStore = useLanguageStore();
 
-const filters = ref(["Todos", "Full Stack", "API Rest", "Otros"]);
+const selectedFilter = ref("all");
 
-const projects = ref([
-  {
-    id: 1,
-    title: "E-commerce",
-    description:
-      "Este proyecto consiste en el desarrollo de una tienda online full stack moderna y escalable, utilizando Laravel 10 como backend API REST y Angular 17 como frontend SPA, El sistema está diseñado para cubrir un flujo completo de ecommerce: gestión de usuarios, productos, carrito de compras, pagos en línea y despliegue en la nube. Asi como un panel de administración para gestionar productos, pedidos y usuarios.",
-    image: "/ecommerce.png",
-    demo: [
-      { name: "Usuario", url: "https://tudemo.com/ecommerce" },
-      { name: "Admin", url: "https://tudemo.com/admin" },
-    ],
-    github: "https://github.com/Heectorr90/E-commerce-app",
-    technologies: [
-      "Angular",
-      "JWT",
-      "MySQL",
-      "Laravel",
-      "PayPal API",
-      "Mercado Pago API",
-      "Angular Material",
-      "TypeScript",
-      "RxJS",
-    ],
-    category: ["Full Stack", "API Rest"],
-  },
-  {
-    id: 2,
-    title: "Chatbot de IA",
-    description:
-      "Chatbot inteligente impulsado por IA que responde preguntas y asiste a los usuarios en tiempo real mediante procesamiento de lenguaje natural.",
-    image: "/chatBot.png",
-    demo: "https://react-ai-chatbot-gamma.vercel.app/",
-    github: "https://github.com/Heectorr90/react-ai-chatbot",
-    technologies: ["React", "OpenAI", "GPT", "Gemini"],
-    category: ["Otros"],
-  },
-
-  {
-    id: 3,
-    title: "Sistema de Inventario de Equipos",
-    description:
-      "Sistema web para gestionar equipos mediante una estructura jerárquica (Categoría Padre, Hijo y Subcategoría). Incluye CRUD completo, validaciones y generación automática de código de inventario único con prefijo y consecutivo. Cuenta con formularios dinámicos, búsqueda, filtros y paginación. Desarrollado con Livewire para una experiencia fluida y Tailwind para una interfaz moderna.",
-    image: "/inventory_system.png",
-    demo: "https://in-time-control-production.up.railway.app/",
-    github: "https://github.com/Heectorr90/in-time-control.git",
-    technologies: ["Laravel", "MySQL", "Livewire", "Tailwind CSS"],
-    category: ["Full Stack"],
-  },
-
-  {
-    id: 4,
-    title: "EventHub",
-    description:
-      "Sistema de gestión de eventos que permite crear, registrar y administrar participantes. Incluye autenticación, control de aforo y panel de administración.",
-    image: "/event_hub.png",
-    demo: "https://hectorrm.infinityfreeapp.com/",
-    github: "https://github.com/Heectorr90/EventHub.git",
-    technologies: ["PHP", "MySQL", "Bootstrap", "JavaScript"],
-    category: ["Otros"],
-  },
-  {
-    id: 5,
-    title: "Blog Personal",
-    description:
-      "Blog moderno con búsqueda y categorías. Con autenticación y panel de administración con roles de usuario.",
-    image: "/blog_app.png",
-    demo: "https://blog-app-six-drab.vercel.app/",
-    github: "https://github.com/Heectorr90/blog-app.git",
-    technologies: ["Vue.js", "Vuetify", "Laravel", "MySQL", "JWT"],
-    category: ["Full Stack", "API Rest"],
-  },
-  {
-    id: 6,
-    title: "DashForge",
-    description:
-      "Aplicación web en Vue 3 para crear dashboards dinámicos con widgets personalizables y drag & drop. Usa Pinia para manejo de estado y renderizado dinámico de componentes. Soporta modo local y persistencia con usuarios autenticados, ofreciendo una experiencia flexible y escalable.",
-    image: "/dash_forge.png",
-    demo: "https://dash-forge-iota.vercel.app/",
-    github: "https://github.com/Heectorr90/DashForge.git",
-    technologies: ["Vue.js", "Tailwind CSS", "Laravel", "MySQL", "JWT"],
-    category: ["Full Stack"],
-  },
-]);
+const filters = computed(() => projectFilters);
 
 const filteredProjects = computed(() => {
-  if (selectedFilter.value === "Todos") {
-    return projects.value;
+  if (selectedFilter.value === "all") {
+    return projects;
   }
-  return projects.value.filter((project) => project.category.includes(selectedFilter.value));
+  return projects.filter((project) => project.categories.includes(selectedFilter.value));
 });
 </script>
 

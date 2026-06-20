@@ -3,7 +3,10 @@
     <v-container>
       <!-- Título de la sección -->
       <div class="section-header text-center mb-12">
-        <h2 class="section-title">Sobre <span class="highlight">Mí</span></h2>
+        <h2 class="section-title">
+          {{ languageStore.t("about.title") }}
+          <span class="highlight">{{ languageStore.t("about.titleHighlight") }}</span>
+        </h2>
         <div class="title-underline"></div>
       </div>
 
@@ -11,25 +14,20 @@
         <!-- Columna izquierda: Descripción -->
         <v-col cols="12" md="5">
           <div class="about-content fade-in">
-            <h3 class="about-title mb-6">¿Por qué contratarme?</h3>
+            <h3 class="about-title mb-6">{{ languageStore.t("about.whyHire") }}</h3>
 
-            <p class="about-text mb-4">Mi valor se centra en el dominio de la pila completa:</p>
+            <p class="about-text mb-4">{{ languageStore.t("about.valueIntro") }}</p>
 
             <p class="about-text mb-4">
-              Frontend: Experto en Vue.js y Angular, garantizando interfaces de usuario atractivas y
-              totalmente responsivas.
+              {{ languageStore.t("about.frontend") }}
             </p>
 
             <p class="about-text mb-4">
-              Backend: Sólida experiencia en Laravel y PHP, enfocada en la creación de APIs REST
-              robustas y funcionales.
+              {{ languageStore.t("about.backend") }}
             </p>
 
             <p class="about-text mb-4">
-              Destaco por ir más allá del código: me especializo en la automatización, monitoreo y
-              resolución de incidencias técnicas para asegurar que las aplicaciones no solo
-              funcionen, sino que optimicen los procesos del negocio. Siempre estoy en constante
-              aprendizaje de nuevas tecnologías y mejores prácticas.
+              {{ languageStore.t("about.additional") }}
             </p>
           </div>
         </v-col>
@@ -40,15 +38,15 @@
             <v-tabs v-model="activeTab" color="primary" align-tabs="center" grow>
               <v-tab value="experiencia">
                 <v-icon start>mdi-briefcase</v-icon>
-                Experiencia
+                {{ languageStore.t("about.tabs.experience") }}
               </v-tab>
               <v-tab value="educacion">
                 <v-icon start>mdi-school</v-icon>
-                Educación
+                {{ languageStore.t("about.tabs.education") }}
               </v-tab>
               <v-tab value="informacion">
                 <v-icon start>mdi-account</v-icon>
-                Información
+                {{ languageStore.t("about.tabs.information") }}
               </v-tab>
             </v-tabs>
 
@@ -57,10 +55,14 @@
                 <!-- Tab Experiencia -->
                 <v-window-item value="experiencia">
                   <div class="tab-content">
-                    <h3 class="tab-title mb-4">Mi <span class="highlight">Experiencia</span></h3>
+                    <h3 class="tab-title mb-4">
+                      {{ languageStore.t("about.myExperience") }}
+                      <span class="highlight">{{
+                        languageStore.t("about.experienceHighlight")
+                      }}</span>
+                    </h3>
                     <p class="tab-description mb-6">
-                      He trabajado en diversos proyectos que me han permitido crecer como
-                      desarrollador web.
+                      {{ languageStore.t("about.experienceDesc") }}
                     </p>
 
                     <div class="experience-list">
@@ -85,9 +87,14 @@
                 <!-- Tab Educación -->
                 <v-window-item value="educacion">
                   <div class="tab-content">
-                    <h3 class="tab-title mb-4">Mi <span class="highlight">Educación</span></h3>
+                    <h3 class="tab-title mb-4">
+                      {{ languageStore.t("about.myEducation") }}
+                      <span class="highlight">{{
+                        languageStore.t("about.educationHighlight")
+                      }}</span>
+                    </h3>
                     <p class="tab-description mb-6">
-                      Formación académica y cursos que respaldan mis conocimientos técnicos.
+                      {{ languageStore.t("about.educationDesc") }}
                     </p>
 
                     <div class="education-list">
@@ -112,10 +119,9 @@
                 <!-- Tab Información -->
                 <v-window-item value="informacion">
                   <div class="tab-content">
-                    <h3 class="tab-title mb-4">Mi <span class="highlight">Información</span></h3>
+                    <h3 class="tab-title mb-4">{{ languageStore.t("about.informationTitle") }}</h3>
                     <p class="tab-description mb-6">
-                      A continuación, te comparto mis datos personales y de contacto para que puedas
-                      comunicarte conmigo de manera directa y eficiente.
+                      {{ languageStore.t("about.informationDesc") }}
                     </p>
 
                     <div class="info-list">
@@ -145,51 +151,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useLanguageStore } from "@/stores/languageStore";
 
+const languageStore = useLanguageStore();
 const activeTab = ref("experiencia");
 
-const experienceList = ref([
-  {
-    year: "2022 - 2025",
-    title: "Desarrollador Web Jr.",
-    company: 'Bit Electronics "Centro de servicio"',
-    description:
-      "Automatización, monitoreo y resolución de incidencias técnicas de tareas repetitivas mediante scripts y herramientas de backend para mejorar la productividad.",
-  },
-  {
-    year: "2021 - 2022",
-    title: "Programador Front-end",
-    company: "CTED Corporativo Tecnológico y Educativo S.A. de C.V.",
-    description:
-      "Durante mi estancia como becario, participé en el desarrollo y mantenimiento de aplicaciones web utilizando tecnologías como HTML, CSS y Angular.",
-  },
-]);
-
-const educationList = ref([
-  {
-    year: "2023 - 2024",
-    title: "Ingeniería en Sistemas Computacionales",
-    institution: "Tecnológico Universitario de Toluca",
-    description: "Enfoque en desarrollo de software, bases de datos y administración de sistemas.",
-  },
-  {
-    year: "2016 - 2019",
-    title: "Ingeniería Informática (Trunca)",
-    institution: "Tecnológico Universitario de Toluca",
-    description:
-      "Formación en lógica de programación, redes y fundamentos de ingeniería. Se cursaron materias clave antes de la interrupción de estudios.",
-  },
-]);
-
-const informacionPersonal = ref([
-  { label: "Nombre", value: "Héctor Ramírez" },
-  { label: "Edad", value: "29 años" },
-  { label: "Estado", value: "Soltero" },
-  { label: "Ubicación", value: "Estado de México, Toluca" },
-  { label: "Correo", value: "developerbit035@gmail.com" },
-  { label: "Lenguaje", value: "Español, Inglés (Básico)" },
-]);
+const experienceList = computed(() => languageStore.t("about.experienceEntries") || []);
+const educationList = computed(() => languageStore.t("about.educationEntries") || []);
+const informacionPersonal = computed(() => languageStore.t("about.personalInfo") || []);
 </script>
 
 <style scoped>

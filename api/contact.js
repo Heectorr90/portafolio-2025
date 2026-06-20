@@ -1,47 +1,39 @@
 /* eslint-disable no-undef */
+import { makeBrevoEmailProvider } from "./contact/brevo-email.provider.js";
+import { makeContactMessageDto } from "./contact/contact-message.dto.js";
+import { validateContactMessage } from "./contact/contact-message.validator.js";
+import { sendContactMessageAction } from "./contact/send-contact-message.action.js";
+
+const CONTACT_EMAIL = "developerbit035@gmail.com";
+const SENDER_NAME = "Contacto Portafolio";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  const { name, email, subject, message } = req.body;
-
-  if (!name || !email || !message) {
-    return res.status(422).json({ message: "Datos incompletos" });
+  if (!process.env.BREVO_API_KEY) {
+    console.error("BREVO_API_KEY is not configured");
+    return res.status(500).json({ message: "Configuracion de correo incompleta" });
   }
 
-  try {
-    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "api-key": process.env.BREVO_API_KEY,
-      },
-      body: JSON.stringify({
-        sender: {
-          name: "Contacto Portafolio",
-          email: "developerbit035@gmail.com",
-        },
-        to: [{ email: "developerbit035@gmail.com" }],
-        replyTo: {
-          email,
-        },
-        subject: subject || "Nuevo mensaje desde el portafolio",
-        htmlContent: `
-          <h3>Nuevo mensaje desde el portafolio</h3>
-          <p><b>Nombre:</b> ${name}</p>
-          <p><b>Email:</b> ${email}</p>
-          <p><b>Mensaje:</b></p>
-          <p>${message}</p>
-        `,
-      }),
-    });
+  const contactMessage = makeContactMessageDto(req.body);
+  const errors = validateContactMessage(contactMessage);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(errorText);
-      return res.status(500).json({ message: "Error Brevo" });
-    }
+  if (errors.length > 0) {
+    return res.status(422).json({ message: "Datos invalidos", errors });
+  }
+
+  const emailProvider = makeBrevoEmailProvider({
+    apiKey: process.env.BREVO_API_KEY,
+    senderEmail: CONTACT_EMAIL,
+    senderName: SENDER_NAME,
+  });
+
+  try {
+    await sendContactMessageAction(contactMessage, emailProvider, {
+      recipientEmail: CONTACT_EMAIL,
+    });
 
     return res.status(200).json({ message: "OK" });
   } catch (error) {

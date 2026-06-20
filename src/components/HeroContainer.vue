@@ -1,28 +1,30 @@
 <template>
   <section id="home" class="hero-section">
-    <v-container class="fill-height">
-      <v-row align="center" justify="center">
+    <v-container fluid class="hero-container">
+      <v-row align="center" justify="center" class="hero-row">
         <!-- Contenido principal -->
         <v-col cols="12" md="7" class="hero-content">
           <div class="text-content">
             <!-- Saludo animado -->
-            <h3 class="greeting fade-in">Hola, soy</h3>
+            <h3 class="greeting fade-in">
+              {{ languageStore.t("hero.greeting") }}
+            </h3>
 
             <!-- Nombre principal -->
-            <h1 class="name slide-in-left">Hector Ramirez</h1>
+            <h1 class="name slide-in-left">{{ languageStore.t("hero.name") }}</h1>
 
             <!-- Texto dinámico con títulos -->
             <div class="typing-container slide-in-left">
               <h2 class="profession">
-                Y soy <span class="typing-text">{{ currentTitle }}</span>
+                {{ languageStore.t("hero.rolePrefix") }}
+                <span class="typing-text">{{ currentTitle }}</span>
                 <span class="cursor">|</span>
               </h2>
             </div>
 
             <!-- Descripción -->
             <p class="description fade-in-up">
-              Desarrollador apasionado por crear experiencias web increíbles. Especializado en
-              Vue.js, JavaScript y diseño moderno.
+              {{ languageStore.t("hero.description") }}
             </p>
 
             <!-- Botones de acción -->
@@ -35,7 +37,7 @@
                 @click="scrollToContact"
               >
                 <v-icon start>mdi-email</v-icon>
-                Contáctame
+                {{ languageStore.t("hero.contactBtn") }}
               </v-btn>
 
               <v-btn
@@ -48,7 +50,7 @@
                 target="_blank"
               >
                 <v-icon start>mdi-download</v-icon>
-                Descargar CV
+                {{ languageStore.t("hero.downloadCV") }}
               </v-btn>
             </div>
 
@@ -89,10 +91,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
+import { useLanguageStore } from "@/stores/languageStore";
 
-// Títulos que se van rotando
-const titles = ["Desarrollador Full Stack", "Desarrollador de Software"];
+const languageStore = useLanguageStore();
+
+// Títulos que se van rotando - se actualizan con el idioma
+const titles = computed(() => languageStore.t("hero.titles"));
 
 const currentTitle = ref("");
 const socialLinks = ref([
@@ -112,7 +117,7 @@ let typingInterval = null;
 
 // Efecto de escritura (typing effect)
 const typeEffect = () => {
-  const currentFullTitle = titles[titleIndex];
+  const currentFullTitle = titles.value[titleIndex];
 
   if (isDeleting) {
     currentTitle.value = currentFullTitle.substring(0, charIndex - 1);
@@ -133,7 +138,7 @@ const typeEffect = () => {
   // Si terminó de borrar
   else if (isDeleting && charIndex === 0) {
     isDeleting = false;
-    titleIndex = (titleIndex + 1) % titles.length; // Siguiente título
+    titleIndex = (titleIndex + 1) % titles.value.length; // Siguiente título
     typeSpeed = 500; // Pausa antes de escribir nuevo título
   }
 
@@ -168,12 +173,27 @@ onUnmounted(() => {
 
 <style scoped>
 .hero-section {
-  min-height: 100vh;
+  height: calc(100svh - 70px);
+  min-height: 720px;
   background: #081b29;
   position: relative;
   display: flex;
   align-items: center;
   overflow: hidden;
+  padding: clamp(2rem, 6vh, 4rem) 0;
+  box-sizing: border-box;
+}
+
+.hero-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-inline: clamp(2rem, 3.5vw, 4rem);
+  box-sizing: border-box;
+}
+
+.hero-row {
+  width: 100%;
 }
 
 /* Contenido de texto */
@@ -269,7 +289,7 @@ onUnmounted(() => {
 .hero-image-container {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: clamp(300px, 26vw, 430px);
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
@@ -398,7 +418,13 @@ onUnmounted(() => {
 /* Responsive */
 @media (max-width: 960px) {
   .hero-section {
-    padding-top: 70px;
+    height: auto;
+    min-height: auto;
+    padding: 90px 0 70px;
+  }
+
+  .hero-container {
+    height: auto;
   }
 
   .text-content {

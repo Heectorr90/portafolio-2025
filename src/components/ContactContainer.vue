@@ -4,33 +4,34 @@
       <!-- Título de la sección -->
       <div class="section-header text-center mb-12">
         <h2 class="section-title">
-          <span class="highlight">Contáctame</span>
+          <span class="highlight">{{ languageStore.t("contact.contactMe") }}</span>
         </h2>
         <div class="title-underline"></div>
-        <p class="section-subtitle mt-4">¿Tienes un proyecto en mente? ¡Hablemos!</p>
+        <p class="section-subtitle mt-4">{{ languageStore.t("contact.subtitle") }}</p>
       </div>
 
       <v-row align="center" justify="center">
         <!-- Información de contacto -->
         <v-col cols="12" md="5" class="mb-8 mb-md-0">
           <div class="contact-info fade-in">
-            <h3 class="info-title mb-6">Información de Contacto</h3>
+            <h3 class="info-title mb-6">{{ languageStore.t("contact.contactInfo") }}</h3>
             <p class="info-description mb-8">
-              Estoy disponible para trabajar en tu próximo proyecto. No dudes en contactarme a
-              través de cualquiera de estos medios.
+              {{ languageStore.t("contact.infoDescription") }}
             </p>
 
             <!-- Items de contacto -->
-            <div v-for="item in contactItems" :key="item.title" class="contact-item mb-6">
+            <div v-for="item in contactItems" :key="item.titleKey" class="contact-item mb-6">
               <div class="d-flex align-start">
                 <v-avatar color="primary" size="50" class="contact-icon mr-4">
                   <v-icon :icon="item.icon" color="background"></v-icon>
                 </v-avatar>
                 <div class="contact-details">
-                  <h4 class="contact-title">{{ item.title }}</h4>
-                  <p class="contact-value">{{ item.value }}</p>
+                  <h4 class="contact-title">{{ languageStore.t(item.titleKey) }}</h4>
+                  <p class="contact-value">
+                    {{ item.valueKey ? languageStore.t(item.valueKey) : item.value }}
+                  </p>
                   <a v-if="item.link" :href="item.link" class="contact-link" target="_blank">
-                    {{ item.linkText }}
+                    {{ languageStore.t(item.linkTextKey) }}
                   </a>
                 </div>
               </div>
@@ -38,7 +39,7 @@
 
             <!-- Redes sociales -->
             <div class="social-links mt-8">
-              <h4 class="social-title mb-4">Sígueme en:</h4>
+              <h4 class="social-title mb-4">{{ languageStore.t("contact.followMe") }}</h4>
               <div class="d-flex gap-3">
                 <v-btn
                   v-for="social in socialLinks"
@@ -61,13 +62,13 @@
         <v-col cols="12" md="6" offset-md="1">
           <v-card class="contact-form-card fade-in-up" color="surface" elevation="12">
             <v-card-text class="pa-8">
-              <h3 class="form-title mb-6">Envíame un Mensaje</h3>
+              <h3 class="form-title mb-6">{{ languageStore.t("contact.sendMessage") }}</h3>
 
               <v-form ref="form" v-model="valid" @submit.prevent="submitForm">
                 <!-- Nombre -->
                 <v-text-field
                   v-model="formData.name"
-                  label="Nombre completo"
+                  :label="languageStore.t('contact.form.fullName')"
                   :rules="nameRules"
                   variant="outlined"
                   color="primary"
@@ -79,7 +80,7 @@
                 <!-- Email -->
                 <v-text-field
                   v-model="formData.email"
-                  label="Email"
+                  :label="languageStore.t('contact.form.email')"
                   :rules="emailRules"
                   variant="outlined"
                   color="primary"
@@ -92,7 +93,7 @@
                 <!-- Asunto -->
                 <v-text-field
                   v-model="formData.subject"
-                  label="Asunto"
+                  :label="languageStore.t('contact.form.subject')"
                   :rules="subjectRules"
                   variant="outlined"
                   color="primary"
@@ -104,7 +105,7 @@
                 <!-- Mensaje -->
                 <v-textarea
                   v-model="formData.message"
-                  label="Mensaje"
+                  :label="languageStore.t('contact.form.message')"
                   :rules="messageRules"
                   variant="outlined"
                   color="primary"
@@ -124,7 +125,11 @@
                   :disabled="!valid"
                 >
                   <v-icon start>mdi-send</v-icon>
-                  Enviar Mensaje
+                  {{
+                    loading
+                      ? languageStore.t("contact.form.sending")
+                      : languageStore.t("contact.form.send")
+                  }}
                 </v-btn>
               </v-form>
 
@@ -137,7 +142,7 @@
                 closable
                 @click:close="showSuccess = false"
               >
-                ¡Mensaje enviado con éxito! Te responderé pronto.
+                {{ languageStore.t("contact.form.successMessage") }}
               </v-alert>
 
               <!-- Mensaje de error -->
@@ -149,7 +154,7 @@
                 closable
                 @click:close="showError = false"
               >
-                Hubo un error al enviar el mensaje. Intenta nuevamente.
+                {{ languageStore.t("contact.form.errorMessage") }}
               </v-alert>
             </v-card-text>
           </v-card>
@@ -160,8 +165,12 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useLanguageStore } from "@/stores/languageStore";
+import { contactItems, socialLinks } from "@/data/contact";
 import api from "@/services/api";
+
+const languageStore = useLanguageStore();
 
 const form = ref(null);
 const valid = ref(false);
@@ -176,60 +185,26 @@ const formData = ref({
   message: "",
 });
 
-const contactItems = ref([
-  {
-    icon: "mdi-map-marker",
-    title: "Ubicación",
-    value: "Toluca, México",
-    link: null,
-    linkText: null,
-  },
-  {
-    icon: "mdi-email",
-    title: "Email",
-    value: "developerbit035@gmail.com",
-    link: "mailto:developerbit035@gmail.com",
-    linkText: "Enviar email",
-  },
-  {
-    icon: "mdi-phone",
-    title: "Teléfono",
-    value: "+52 722 571 9891",
-    link: "tel:+527225719891",
-    linkText: "Llamar ahora",
-  },
-]);
-
-const socialLinks = ref([
-  { name: "GitHub", icon: "mdi-github", url: "https://github.com/Heectorr90" },
-  {
-    name: "LinkedIn",
-    icon: "mdi-linkedin",
-    url: "https://www.linkedin.com/in/hector-ramirez-909577215/",
-  },
-  { name: "Instagram", icon: "mdi-instagram", url: "https://www.instagram.com/yovaz.ramirez/" },
-]);
-
 // Reglas de validación
-const nameRules = [
-  (v) => !!v || "El nombre es requerido",
-  (v) => (v && v.length >= 3) || "El nombre debe tener al menos 3 caracteres",
-];
+const nameRules = computed(() => [
+  (v) => !!v || languageStore.t("contact.validation.nameRequired"),
+  (v) => (v && v.length >= 3) || languageStore.t("contact.validation.nameMin"),
+]);
 
-const emailRules = [
-  (v) => !!v || "El email es requerido",
-  (v) => /.+@.+\..+/.test(v) || "El email debe ser válido",
-];
+const emailRules = computed(() => [
+  (v) => !!v || languageStore.t("contact.validation.emailRequired"),
+  (v) => /.+@.+\..+/.test(v) || languageStore.t("contact.validation.emailInvalid"),
+]);
 
-const subjectRules = [
-  (v) => !!v || "El asunto es requerido",
-  (v) => (v && v.length >= 5) || "El asunto debe tener al menos 5 caracteres",
-];
+const subjectRules = computed(() => [
+  (v) => !!v || languageStore.t("contact.validation.subjectRequired"),
+  (v) => (v && v.length >= 3) || languageStore.t("contact.validation.subjectMin"),
+]);
 
-const messageRules = [
-  (v) => !!v || "El mensaje es requerido",
-  (v) => (v && v.length >= 10) || "El mensaje debe tener al menos 10 caracteres",
-];
+const messageRules = computed(() => [
+  (v) => !!v || languageStore.t("contact.validation.messageRequired"),
+  (v) => (v && v.length >= 10) || languageStore.t("contact.validation.messageMin"),
+]);
 
 // Enviar formulario
 const submitForm = async () => {
@@ -242,8 +217,6 @@ const submitForm = async () => {
 
     try {
       await api.post("/contact", formData.value);
-
-      console.log("Formulario enviado:", formData.value);
 
       showSuccess.value = true;
       formData.value = {

@@ -3,9 +3,9 @@
     <v-container>
       <!-- Título de la sección -->
       <div class="section-header text-center mb-12">
-        <h2 class="section-title">Mis <span class="highlight">Habilidades</span></h2>
+        <h2 class="section-title">{{ languageStore.t('skills.mySkills') }} <span class="highlight">{{ languageStore.t('skills.skillsHighlight') }}</span></h2>
         <div class="title-underline"></div>
-        <p class="section-subtitle mt-4">Tecnologías y herramientas que domino</p>
+        <p class="section-subtitle mt-4">{{ languageStore.t('skills.skillsSubtitle') }}</p>
       </div>
 
       <!-- Categorías de habilidades -->
@@ -19,9 +19,15 @@
             </v-card-title>
 
             <v-card-text class="pa-6">
-              <div v-for="skill in category.skills" :key="skill.name" class="skill-item mb-6">
+              <div
+                v-for="skill in category.skills"
+                :key="skill.name || skill.labelKey"
+                class="skill-item mb-6"
+              >
                 <div class="d-flex justify-space-between align-center mb-2">
-                  <span class="skill-name">{{ skill.name }}</span>
+                  <span class="skill-name">{{
+                    skill.labelKey ? languageStore.t(skill.labelKey) : skill.name
+                  }}</span>
                   <span class="skill-percentage">{{ skill.level }}%</span>
                 </div>
                 <div class="skill-bar-container">
@@ -35,7 +41,7 @@
 
       <!-- Herramientas adicionales -->
       <div class="tools-section mt-12">
-        <h3 class="tools-title text-center mb-8">Herramientas y Tecnologías</h3>
+        <h3 class="tools-title text-center mb-8">{{ languageStore.t('skills.toolsTitle') }}</h3>
 
         <v-row justify="center">
           <v-col
@@ -59,20 +65,20 @@
 
       <!-- Estadísticas -->
       <div class="stats-section mt-12">
-        <h3 class="stats-title text-center mb-8">Logros Destacados</h3>
+        <h3 class="stats-title text-center mb-8">{{ languageStore.t('skills.achievements') }}</h3>
         <v-row>
           <v-col
             cols="12"
             sm="6"
             md="3"
             v-for="achievement in achievements"
-            :key="achievement.title"
+            :key="achievement.labelKey"
           >
             <v-card class="achievement-card text-center" color="surface" elevation="4">
               <v-card-text>
                 <v-icon :icon="achievement.icon" size="60" color="primary" class="mb-4"></v-icon>
                 <h4 class="achievement-number">{{ achievement.number }}</h4>
-                <p class="achievement-label">{{ achievement.label }}</p>
+                <p class="achievement-label">{{ languageStore.t(achievement.labelKey) }}</p>
               </v-card-text>
             </v-card>
           </v-col>
@@ -83,11 +89,14 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useLanguageStore } from "@/stores/languageStore";
 
-const skillCategories = ref([
+const languageStore = useLanguageStore();
+
+const skillCategories = computed(() => [
   {
-    title: "Frontend",
+    title: languageStore.t('skills.frontend'),
     icon: "mdi-monitor",
     skills: [
       { name: "HTML5", level: 95 },
@@ -100,7 +109,7 @@ const skillCategories = ref([
     ],
   },
   {
-    title: "Backend",
+    title: languageStore.t('skills.backend'),
     icon: "mdi-server",
     skills: [
       { name: "PHP", level: 85 },
@@ -112,14 +121,14 @@ const skillCategories = ref([
     ],
   },
   {
-    title: "Herramientas",
+    title: languageStore.t('skills.tools'),
     icon: "mdi-cog",
     skills: [
-      { name: "Git y GitHub", level: 90 },
-      { name: "Responsive Design", level: 92 },
-      { name: "Automatización", level: 85 },
-      { name: "Scripts Backend", level: 80 },
-      { name: "Testing", level: 70 },
+      { labelKey: "skills.items.gitGithub", level: 90 },
+      { labelKey: "skills.items.responsiveDesign", level: 92 },
+      { labelKey: "skills.items.automation", level: 85 },
+      { labelKey: "skills.items.backendScripts", level: 80 },
+      { labelKey: "skills.items.testing", level: 70 },
       { name: "Tailwind CSS", level: 70 },
       { name: "Livewire", level: 70 },
     ],
@@ -127,34 +136,34 @@ const skillCategories = ref([
 ]);
 
 const tools = ref([
+  { name: "Railway", icon: "mdi-train" },
+  { name: "Hostinger", icon: "mdi-server-network" },
+  { name: "Codex", icon: "mdi-robot-outline" },
+  { name: "Postman", icon: "mdi-api" },
+  { name: "Docker", icon: "mdi-docker" },
   { name: "VS Code", icon: "mdi-microsoft-visual-studio-code" },
-  { name: "Git", icon: "mdi-git" },
-  { name: "GitHub", icon: "mdi-github" },
-  { name: "MySQL", icon: "mdi-database" },
-  { name: "Laravel", icon: "mdi-language-php" },
-  { name: "Vue.js", icon: "mdi-vuejs" },
 ]);
 
 const achievements = ref([
   {
     icon: "mdi-trophy",
     number: "10+",
-    label: "Proyectos Completados",
+    labelKey: "skills.projectsCompleted",
   },
   {
     icon: "mdi-briefcase",
     number: "3+",
-    label: "Años de Experiencia",
+    labelKey: "skills.yearsExperience",
   },
   {
     icon: "mdi-account-group",
     number: "5+",
-    label: "Clientes Satisfechos",
+    labelKey: "skills.clientsSatisfied",
   },
   {
     icon: "mdi-code-tags",
     number: "9",
-    label: "Tecnologías Dominadas",
+    labelKey: "skills.technologiesMastered",
   },
 ]);
 </script>
